@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useStore } from '@nanostores/react';
-import { assessmentStore, currentStepStore, setStep, calculateApproachScores, type ApproachOptions } from '../logic/index';
+import { assessmentStore, currentStepStore, setStep, calculateApproachScores, generateBlueprint } from '../logic/index';
 import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -16,6 +16,7 @@ export default function ResultsDashboard() {
 
   // Sort results by highest score
   const sortedResults = Object.values(results).sort((a, b) => b.score - a.score);
+  const winningApproach = sortedResults[0];
 
   const getColorClass = (score: number) => {
     if (score >= 80) return 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30';
@@ -39,6 +40,19 @@ export default function ResultsDashboard() {
     }
   };
 
+  const handleDownloadBlueprint = () => {
+    const mdContent = generateBlueprint(data, winningApproach.approach);
+    const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `architecture-blueprint-${winningApproach.approach.toLowerCase()}.md`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const dashboardVariants = {
     hidden: { opacity: 0, scale: 0.95 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.5, staggerChildren: 0.1 } }
@@ -55,24 +69,31 @@ export default function ResultsDashboard() {
       initial="hidden" animate="visible" variants={dashboardVariants}
       className="bg-slate-900/50 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 shadow-2xl max-w-5xl mx-auto"
     >
-      <div className="flex justify-between items-center mb-10 border-b border-white/10 pb-6">
+      <div className="flex justify-between items-center mb-10 border-b border-white/10 pb-6 flex-wrap gap-4">
         <div>
           <h2 className="text-3xl font-bold text-white tracking-tight">Architectural Assessment</h2>
           <p className="text-slate-400 mt-2">Optimal stack recommendation based on 2026 Enterprise Standards.</p>
         </div>
-        <div className="flex space-x-4">
+        <div className="flex flex-wrap gap-3">
+          <button 
+            onClick={handleDownloadBlueprint}
+            className="flex items-center space-x-2 text-sm font-bold text-slate-900 transition-all bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 px-5 py-2.5 rounded-lg shadow-[0_0_15px_rgba(52,211,153,0.3)] active:scale-95"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            <span>Download Architect Blueprint</span>
+          </button>
           <button 
             onClick={handleExportPDF}
-            className="flex items-center space-x-2 text-sm font-medium text-white transition-colors bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/50 px-4 py-2 rounded-lg"
+            className="flex items-center space-x-2 text-sm font-medium text-white transition-colors bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2.5 rounded-lg active:scale-95"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-            <span>Export ADR</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" x2="12" y1="18" y2="12"/><line x1="9" x2="15" y1="15" y2="15"/></svg>
+            <span>Export ADR (PDF)</span>
           </button>
           <button 
             onClick={() => setStep('volumetry')}
-            className="text-sm font-medium text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg"
+            className="text-sm font-medium text-slate-400 hover:text-white transition-colors border border-transparent hover:border-white/10 px-4 py-2.5 rounded-lg"
           >
-            Retake Assessment
+            Retake Form
           </button>
         </div>
       </div>
@@ -131,4 +152,3 @@ export default function ResultsDashboard() {
     </motion.div>
   );
 }
-
