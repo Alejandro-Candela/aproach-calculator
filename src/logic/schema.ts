@@ -1,36 +1,65 @@
 import { z } from "zod";
 
+export const AssessmentDataModels = {
+  // 1. Scale / Audience
+  audienceSize: z.enum([
+    'Internal team only (Under 50 people)',
+    'Hundreds of customers daily',
+    'Thousands of users globally'
+  ]),
+  
+  // 2. Core Task / Complexity
+  coreTask: z.enum([
+    'Mostly answering questions from our documents (Q&A/RAG)',
+    'Following a strict, step-by-step process',
+    'Making autonomous decisions and using multiple tools'
+  ]),
+  
+  // 3. Integrations
+  integrations: z.enum([
+    'None, it works independently',
+    'Standard tools (Salesforce, Google Drive, Hubspot)',
+    'Our own custom/proprietary internal databases and APIs'
+  ]),
+
+  // 4. Privacy & Compliance
+  dataSensitivity: z.enum([
+    'Public or general information',
+    'Internal company data (Confidential)',
+    'Highly sensitive (Medical, Financial, Strictly Regulated)'
+  ]),
+
+  // 5. Channels
+  userInterface: z.enum([
+    'A chat widget on our website',
+    'WhatsApp or Telegram',
+    'Internal portal or custom app integration'
+  ]),
+
+  // 6. Maintenance & Budget Priority
+  budgetPriority: z.enum([
+    'Keep it cheap and easy to maintain, even if less flexible',
+    'Balanced: Pay a subscription for a reliable, managed platform',
+    'Enterprise: We have engineers and want total control and scale'
+  ])
+} as const;
+
 export const assessmentSchema = z.object({
-  // Volumetry
-  tokensPerDay: z.enum(["<1M", "1M-10M", ">10M"]),
-  concurrentUsers: z.enum(["<10", "10-100", ">100"]),
-  
-  // Complexity
-  logicComplexity: z.enum(["Linear/Simple", "Branching", "Multi-Agent/Cyclic"]),
-  requiresCustomMCPs: z.boolean(),
-  
-  // Compliance & Security
-  requiresENS: z.enum(["None", "Basic", "High/Zero-Trust"]),
-  dataPrivacy: z.enum(["Standard", "PII/GDPR Strict", "Air-Gapped/On-Premise"]),
-  
-  // Channels
-  primaryChannel: z.enum(["Web Widget", "WhatsApp/Telegram", "Internal API", "Multiple"]),
-  
-  // Operations & Maintenance
-  inHouseExpertise: z.enum(["Low/None", "Moderate", "High (AI Engineers)"]),
-  budget: z.enum(["<1k/mo", "1k-5k/mo", ">5k/mo (Enterprise)"]),
+  audienceSize: AssessmentDataModels.audienceSize,
+  coreTask: AssessmentDataModels.coreTask,
+  integrations: AssessmentDataModels.integrations,
+  dataSensitivity: AssessmentDataModels.dataSensitivity,
+  userInterface: AssessmentDataModels.userInterface,
+  budgetPriority: AssessmentDataModels.budgetPriority,
 });
 
 export type AssessmentData = z.infer<typeof assessmentSchema>;
 
-export const defaultAssessment: AssessmentData = {
-  tokensPerDay: "1M-10M",
-  concurrentUsers: "10-100",
-  logicComplexity: "Branching",
-  requiresCustomMCPs: false,
-  requiresENS: "Basic",
-  dataPrivacy: "Standard",
-  primaryChannel: "Web Widget",
-  inHouseExpertise: "Moderate",
-  budget: "1k-5k/mo",
+export const defaultAssessmentData: AssessmentData = {
+  audienceSize: 'Internal team only (Under 50 people)',
+  coreTask: 'Mostly answering questions from our documents (Q&A/RAG)',
+  integrations: 'Standard tools (Salesforce, Google Drive, Hubspot)',
+  dataSensitivity: 'Internal company data (Confidential)',
+  userInterface: 'A chat widget on our website',
+  budgetPriority: 'Balanced: Pay a subscription for a reliable, managed platform',
 };

@@ -1,9 +1,9 @@
 import { atom } from 'nanostores';
-import { type AssessmentData, defaultAssessment } from './schema';
+import { type AssessmentData, defaultAssessmentData } from './schema';
 
 export type AssessmentStep = 'volumetry' | 'complexity' | 'compliance' | 'operations' | 'results';
 
-export const assessmentStore = atom<AssessmentData>(defaultAssessment);
+export const assessmentStore = atom<AssessmentData>(defaultAssessmentData);
 export const currentStepStore = atom<AssessmentStep>('volumetry');
 
 export function updateAssessment(partialData: Partial<AssessmentData>) {
