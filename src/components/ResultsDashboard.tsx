@@ -119,6 +119,9 @@ export default function ResultsDashboard() {
          <div className="grid grid-cols-2 gap-4 text-sm">
             <div><span className="text-slate-500 block">Audience Scale:</span> <span className="text-slate-200 font-medium">{data.audienceSize}</span></div>
             <div><span className="text-slate-500 block">Core AI Task:</span> <span className="text-slate-200 font-medium">{data.coreTask}</span></div>
+            <div><span className="text-slate-500 block">Data Volume:</span> <span className="text-slate-200 font-medium">{data.dataVolume}</span></div>
+            <div><span className="text-slate-500 block">Data Type:</span> <span className="text-slate-200 font-medium">{data.dataType}</span></div>
+            <div><span className="text-slate-500 block">Data Freshness:</span> <span className="text-slate-200 font-medium">{data.updateFrequency}</span></div>
             <div><span className="text-slate-500 block">Data Integrations:</span> <span className="text-slate-200 font-medium">{data.integrations}</span></div>
             <div><span className="text-slate-500 block">Privacy constraints:</span> <span className="text-slate-200 font-medium">{data.dataSensitivity}</span></div>
             <div><span className="text-slate-500 block">Primary UI:</span> <span className="text-slate-200 font-medium">{data.userInterface}</span></div>

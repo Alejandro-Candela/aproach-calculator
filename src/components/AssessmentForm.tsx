@@ -8,7 +8,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 const steps = [
   { id: 'audienceSize', label: 'Scale & Audience', title: 'How many users will interact with this AI daily?', options: AssessmentDataModels.audienceSize.options },
   { id: 'coreTask', label: 'Core AI Task', title: 'What is the primary action you need the AI to do?', options: AssessmentDataModels.coreTask.options },
-  { id: 'integrations', label: 'Data & Integrations', title: 'Does the AI need to connect to your internal systems?', options: AssessmentDataModels.integrations.options },
+  { id: 'dataVolume', label: 'Data Volume', title: 'How much data or documents will the AI need to process?', options: AssessmentDataModels.dataVolume.options },
+  { id: 'dataType', label: 'Data Type', title: 'What type of data will the AI mostly interact with?', options: AssessmentDataModels.dataType.options },
+  { id: 'updateFrequency', label: 'Data Freshness', title: 'How quickly does the AI need to reflect new or changed data?', options: AssessmentDataModels.updateFrequency.options },
+  { id: 'integrations', label: 'Data & Integrations', title: 'Does the AI need to connect to other internal systems?', options: AssessmentDataModels.integrations.options },
   { id: 'dataSensitivity', label: 'Privacy & Security', title: 'How sensitive is the information the AI will handle?', options: AssessmentDataModels.dataSensitivity.options },
   { id: 'userInterface', label: 'Primary Interface', title: 'Where will your users interact with this AI?', options: AssessmentDataModels.userInterface.options },
   { id: 'budgetPriority', label: 'Budget & Maintenance', title: 'What is your main priority regarding costs and maintenance?', options: AssessmentDataModels.budgetPriority.options },

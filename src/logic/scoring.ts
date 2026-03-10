@@ -39,7 +39,40 @@ export function calculateApproachScores(data: AssessmentData): Record<ApproachOp
     scores.Low_Code *= 0.6; 
   }
 
-  // 3. Integrations
+  // 3. Data Volume
+  if (data.dataVolume === 'Small (A few PDFs or documents)') {
+    scores.Low_Code += 20;
+    scores.Managed_Cloud += 10;
+  } else if (data.dataVolume === 'Massive (Millions of records or huge databases)') {
+    scores.OS_Stack += 40;
+    scores.Managed_Cloud += 20;
+    scores.Low_Code -= 30;
+  }
+
+  // 4. Data Type
+  if (data.dataType === 'Mainly text (PDFs, Word documents)') {
+    scores.Low_Code += 20;
+    scores.Managed_Cloud += 10;
+  } else if (data.dataType === 'Structured data (Excel, SQL, CSV)') {
+    scores.Low_Code += 30;
+    scores.Managed_Cloud += 20;
+  } else if (data.dataType === 'Complex mixed data (Text, Images, Audio)') {
+    scores.OS_Stack += 40;
+    scores.Managed_Cloud += 30;
+    scores.Low_Code -= 40;
+  }
+
+  // 5. Update Frequency
+  if (data.updateFrequency === 'Rarely changes (Static data)') {
+    scores.Low_Code += 20;
+    scores.Managed_Cloud += 10;
+  } else if (data.updateFrequency === 'Real-time or constant streaming') {
+    scores.OS_Stack += 40;
+    scores.Managed_Cloud += 20;
+    scores.Low_Code -= 40;
+  }
+
+  // 6. Integrations
   if (data.integrations === 'Our own custom/proprietary internal databases and APIs') {
     scores.OS_Stack += 30;
     scores.Managed_Cloud += 20;
@@ -48,7 +81,7 @@ export function calculateApproachScores(data: AssessmentData): Record<ApproachOp
     scores.Low_Code += 30;
   }
 
-  // 4. Data Sensitivity
+  // 7. Data Sensitivity
   if (data.dataSensitivity === 'Highly sensitive (Medical, Financial, Strictly Regulated)') {
     scores.OS_Stack += 50; 
     scores.Managed_Cloud -= 20; 
@@ -57,7 +90,7 @@ export function calculateApproachScores(data: AssessmentData): Record<ApproachOp
     scores.Managed_Cloud += 30;
   }
 
-  // 5. User Interface (Channels)
+  // 8. User Interface (Channels)
   if (data.userInterface === 'WhatsApp or Telegram') {
     scores.Low_Code += 30; 
   } else if (data.userInterface === 'Internal portal or custom app integration') {
@@ -65,7 +98,7 @@ export function calculateApproachScores(data: AssessmentData): Record<ApproachOp
     scores.Managed_Cloud += 20;
   }
 
-  // 6. Maintenance & Budget
+  // 9. Maintenance & Budget
   if (data.budgetPriority === 'Keep it cheap and easy to maintain, even if less flexible') {
     scores.OS_Stack -= 50; 
     scores.Managed_Cloud += 10;
