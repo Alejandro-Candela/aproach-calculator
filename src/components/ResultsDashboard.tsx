@@ -19,9 +19,9 @@ export default function ResultsDashboard() {
   const winningApproach = sortedResults[0];
 
   const getColorClass = (score: number) => {
-    if (score >= 80) return 'text-[#2F4A37] bg-[#F4F5F4] border-[#DCE4DD]'; // Sage
-    if (score >= 50) return 'text-[#5C5855] bg-[#FDFBF7] border-[#E8E2D9]'; // Warm neutral
-    return 'text-[#8C4A3A] bg-[#FDF8F6] border-[#F2E0DB]'; // Terracotta tint
+    if (score >= 80) return 'text-botanical-green-dark bg-botanical-bg border-botanical-green-light'; 
+    if (score >= 50) return 'text-botanical-navy bg-white border-[#E5E2DC]'; 
+    return 'text-botanical-coral bg-[#FFF9F5] border-botanical-coral/30'; 
   };
 
   const handleExportPDF = async () => {
@@ -72,27 +72,27 @@ export default function ResultsDashboard() {
     >
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 border-b border-[#E5E2DC] pb-8 gap-6">
         <div>
-          <h2 className="text-4xl font-serif text-[#33312E] tracking-tight mb-2">Architectural Assessment</h2>
-          <p className="text-[#8A8580] font-sans">Optimal stack recommendation based on Enterprise Standards.</p>
+          <h2 className="text-4xl font-serif text-botanical-navy tracking-tight mb-2">Architectural Assessment</h2>
+          <p className="text-botanical-navy/70 font-sans">Optimal stack recommendation based on Enterprise Standards.</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <button 
             onClick={handleDownloadBlueprint}
-            className="flex items-center space-x-2 text-sm font-medium text-[#FAF9F6] transition-all bg-[#33312E] hover:bg-[#1A1918] px-5 py-2.5 rounded-lg shadow-sm active:scale-95"
+            className="flex items-center space-x-2 text-sm font-medium text-white transition-all bg-botanical-navy hover:bg-botanical-navy/90 px-5 py-2.5 rounded-lg shadow-sm active:scale-95"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
             <span>Download Architect Blueprint</span>
           </button>
           <button 
             onClick={handleExportPDF}
-            className="flex items-center space-x-2 text-sm font-medium text-[#33312E] transition-colors bg-white hover:bg-[#FAF9F6] border border-[#E5E2DC] px-4 py-2.5 rounded-lg shadow-sm active:scale-95"
+            className="flex items-center space-x-2 text-sm font-medium text-botanical-navy transition-colors bg-white hover:bg-botanical-bg border border-[#E5E2DC] px-4 py-2.5 rounded-lg shadow-sm active:scale-95"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" x2="12" y1="18" y2="12"/><line x1="9" x2="15" y1="15" y2="15"/></svg>
             <span>Export ADR (PDF)</span>
           </button>
           <button 
             onClick={() => setStep('volumetry')}
-            className="text-sm font-medium text-[#8A8580] hover:text-[#33312E] transition-colors px-4 py-2.5 rounded-lg hover:bg-[#F2EFE9]"
+            className="text-sm font-medium text-botanical-navy/70 hover:text-botanical-red transition-colors px-4 py-2.5 rounded-lg hover:bg-botanical-red/10"
           >
             Retake Form
           </button>
@@ -104,10 +104,10 @@ export default function ResultsDashboard() {
           <motion.div 
             key={result.approach} 
             variants={itemVariants}
-            className={`relative overflow-hidden border rounded-2xl p-6 md:p-8 transition-all ${getColorClass(result.score)} ${index === 0 ? 'ring-1 ring-[#33312E] ring-offset-2 ring-offset-white shadow-md' : 'opacity-90 grayscale-[0.2]'}`}
+            className={`relative overflow-hidden border rounded-2xl p-6 md:p-8 transition-all ${getColorClass(result.score)} ${index === 0 ? 'ring-1 ring-botanical-navy ring-offset-2 ring-offset-white shadow-md' : 'opacity-90 grayscale-[0.2]'}`}
           >
             {index === 0 && (
-                <div className="absolute top-0 right-0 bg-[#33312E] px-4 py-1.5 rounded-bl-xl font-semibold text-[10px] text-[#FAF9F6] uppercase tracking-widest">
+                <div className="absolute top-0 right-0 bg-botanical-navy px-4 py-1.5 rounded-bl-xl font-semibold text-[10px] text-white uppercase tracking-widest">
                     Recommended Spec
                 </div>
             )}
@@ -133,21 +133,26 @@ export default function ResultsDashboard() {
         ))}
       </div>
       
-      <div className="mt-14 p-8 bg-[#FAF9F6] rounded-2xl border border-[#E5E2DC]">
-         <h4 className="text-[#33312E] font-serif text-xl mb-6 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3 text-[#D97757]"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div className="mt-14 p-8 bg-botanical-bg rounded-2xl border border-botanical-mustard/30 relative overflow-hidden">
+         {/* Decorative leaf subtly embedded in the summary card */}
+         <svg className="absolute -bottom-10 -right-10 w-48 h-48 opacity-[0.03] text-botanical-navy transform rotate-12" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 0C50 0 20 20 20 50C20 80 50 100 50 100C50 100 80 80 80 50C80 20 50 0 50 0Z" />
+         </svg>
+         
+         <h4 className="text-botanical-navy font-serif text-xl mb-6 flex items-center relative z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3 text-botanical-red"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             Selected Parameters Summary
         </h4>
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-sm font-sans">
-            <div><span className="text-[#8A8580] block mb-1 text-xs uppercase tracking-wider">Audience Scale</span> <span className="text-[#33312E] font-medium">{data.audienceSize}</span></div>
-            <div><span className="text-[#8A8580] block mb-1 text-xs uppercase tracking-wider">Core AI Task</span> <span className="text-[#33312E] font-medium">{data.coreTask}</span></div>
-            <div><span className="text-[#8A8580] block mb-1 text-xs uppercase tracking-wider">Data Volume</span> <span className="text-[#33312E] font-medium">{data.dataVolume}</span></div>
-            <div><span className="text-[#8A8580] block mb-1 text-xs uppercase tracking-wider">Data Type</span> <span className="text-[#33312E] font-medium">{data.dataType}</span></div>
-            <div><span className="text-[#8A8580] block mb-1 text-xs uppercase tracking-wider">Data Freshness</span> <span className="text-[#33312E] font-medium">{data.updateFrequency}</span></div>
-            <div><span className="text-[#8A8580] block mb-1 text-xs uppercase tracking-wider">Integrations</span> <span className="text-[#33312E] font-medium">{data.integrations}</span></div>
-            <div><span className="text-[#8A8580] block mb-1 text-xs uppercase tracking-wider">Privacy Constraints</span> <span className="text-[#33312E] font-medium">{data.dataSensitivity}</span></div>
-            <div><span className="text-[#8A8580] block mb-1 text-xs uppercase tracking-wider">Primary UI</span> <span className="text-[#33312E] font-medium">{data.userInterface}</span></div>
-            <div><span className="text-[#8A8580] block mb-1 text-xs uppercase tracking-wider">Budget/Priority</span> <span className="text-[#33312E] font-medium">{data.budgetPriority}</span></div>
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-sm font-sans relative z-10">
+            <div><span className="text-botanical-navy/60 block mb-1 text-xs uppercase tracking-wider">Audience Scale</span> <span className="text-botanical-navy font-medium">{data.audienceSize}</span></div>
+            <div><span className="text-botanical-navy/60 block mb-1 text-xs uppercase tracking-wider">Core AI Task</span> <span className="text-botanical-navy font-medium">{data.coreTask}</span></div>
+            <div><span className="text-botanical-navy/60 block mb-1 text-xs uppercase tracking-wider">Data Volume</span> <span className="text-botanical-navy font-medium">{data.dataVolume}</span></div>
+            <div><span className="text-botanical-navy/60 block mb-1 text-xs uppercase tracking-wider">Data Type</span> <span className="text-botanical-navy font-medium">{data.dataType}</span></div>
+            <div><span className="text-botanical-navy/60 block mb-1 text-xs uppercase tracking-wider">Data Freshness</span> <span className="text-botanical-navy font-medium">{data.updateFrequency}</span></div>
+            <div><span className="text-botanical-navy/60 block mb-1 text-xs uppercase tracking-wider">Integrations</span> <span className="text-botanical-navy font-medium">{data.integrations}</span></div>
+            <div><span className="text-botanical-navy/60 block mb-1 text-xs uppercase tracking-wider">Privacy Constraints</span> <span className="text-botanical-navy font-medium">{data.dataSensitivity}</span></div>
+            <div><span className="text-botanical-navy/60 block mb-1 text-xs uppercase tracking-wider">Primary UI</span> <span className="text-botanical-navy font-medium">{data.userInterface}</span></div>
+            <div><span className="text-botanical-navy/60 block mb-1 text-xs uppercase tracking-wider">Budget/Priority</span> <span className="text-botanical-navy font-medium">{data.budgetPriority}</span></div>
          </div>
       </div>
     </motion.div>

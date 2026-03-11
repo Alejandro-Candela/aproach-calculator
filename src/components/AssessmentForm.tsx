@@ -60,12 +60,12 @@ export default function AssessmentForm() {
             {currentStepData.label}
           </span>
         </div>
-        <div className="w-full bg-[#F2EFE9] rounded-full h-1 overflow-hidden">
+        <div className="w-full bg-[#EAE8E2] h-1.5 rounded-full overflow-hidden flex-1 relative">
           <motion.div 
-            className="bg-[#D97757] h-1 rounded-full" 
-            initial={{ width: `${(currentQuestionIdx / steps.length) * 100}%` }}
+            className="absolute top-0 left-0 h-full bg-botanical-red rounded-full"
+            initial={{ width: 0 }}
             animate={{ width: `${progressPercentage}%` }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            transition={{ ease: "easeOut", duration: 0.4 }}
           />
         </div>
       </div>
@@ -80,36 +80,47 @@ export default function AssessmentForm() {
             transition={{ duration: 0.3, ease: 'easeOut' }}
             className="flex-grow space-y-6"
           >
-            <div>
-              <h2 className="text-3xl font-serif text-[#33312E] mb-8 leading-tight">{currentStepData.title}</h2>
+            <div className="relative z-10 p-6 md:p-10 min-h-[360px] flex flex-col justify-center">
+              <h2 className="text-3xl font-serif text-botanical-navy mb-8 leading-tight max-w-2xl">
+                {currentStepData.title}
+              </h2>
               <Controller
                 name={currentStepData.id as keyof AssessmentData}
                 control={control}
                 render={({ field }) => (
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-1 gap-4">
                     {currentStepData.options.map((option: string) => (
                       <label 
-                        key={option} 
-                        className={`flex items-center p-4 rounded-xl border transition-all cursor-pointer ${field.value === option ? 'border-[#33312E] bg-[#FAF9F6] shadow-sm' : 'border-[#E5E2DC] bg-white hover:border-[#D5CFCD] hover:bg-[#FAF9F6]'} active:scale-[0.99]`}
+                        key={option}
+                        className="relative flex items-center p-5 cursor-pointer rounded-2xl border-2 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] group bg-white/60 hover:bg-white"
+                        style={{
+                           borderColor: field.value === option ? '#152C40' : '#D5CFCD',
+                           backgroundColor: field.value === option ? '#FFFFFF' : '',
+                           boxShadow: field.value === option ? '0 10px 30px -10px rgba(21, 44, 64, 0.1)' : ''
+                        }}
                       >
                         <input
                           type="radio"
-                          className="sr-only"
+                          className="peer sr-only"
                           value={option}
                           checked={field.value === option}
                           onChange={() => field.onChange(option)}
                         />
-                        <div className={`w-5 h-5 rounded-full border flex flex-shrink-0 items-center justify-center mr-4 transition-colors ${field.value === option ? 'border-[#33312E]' : 'border-[#D5CFCD]'}`}>
-                          {field.value === option && <div className="w-2.5 h-2.5 bg-[#33312E] rounded-full" />}
+                        <div className={`flex flex-shrink-0 items-center justify-center w-5 h-5 rounded-full border-2 mr-4 transition-all ${field.value === option ? 'border-botanical-navy bg-botanical-navy' : 'border-[#D5CFCD]'}`}>
+                            {field.value === option && (
+                                <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                            )}
                         </div>
-                        <span className={`text-lg transition-colors ${field.value === option ? 'text-[#33312E] font-medium' : 'text-[#5C5855]'}`}>{option}</span>
+                        <span className="block font-medium text-botanical-navy mb-1 text-lg">
+                          {option}
+                        </span>
                       </label>
                     ))}
                   </div>
                 )}
               />
               {errors[currentStepData.id as keyof AssessmentData] && (
-                <p className="mt-3 text-sm text-[#D97757] flex items-center">
+                <p className="mt-3 text-sm text-botanical-red flex items-center">
                   <span className="mr-1">⚠</span> {errors[currentStepData.id as keyof AssessmentData]?.message}
                 </p>
               )}
