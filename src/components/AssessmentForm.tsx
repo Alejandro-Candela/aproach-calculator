@@ -18,6 +18,7 @@ const steps = [
 ];
 
 export default function AssessmentForm() {
+  const currentStep = assessmentStore.get(); // Or whatever triggers the unmount if needed
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
 
   const { control, handleSubmit, formState: { errors }, trigger, getValues } = useForm<AssessmentData>({
@@ -49,22 +50,22 @@ export default function AssessmentForm() {
   const progressPercentage = ((currentQuestionIdx + 1) / steps.length) * 100;
 
   return (
-    <div className="bg-slate-900/50 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 shadow-2xl max-w-3xl mx-auto w-full">
-      <div className="mb-8">
+    <div className="bg-white/90 backdrop-blur-xl border border-[#E5E2DC] rounded-3xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] max-w-3xl mx-auto w-full">
+      <div className="mb-10">
         <div className="flex justify-between items-center mb-4">
-          <span className="text-sm font-medium text-emerald-400 capitalize tracking-wider">
+          <span className="text-xs font-semibold text-[#8A8580] uppercase tracking-widest">
             Step {currentQuestionIdx + 1} of {steps.length}
           </span>
-          <span className="text-sm font-medium text-slate-400">
+          <span className="text-sm font-medium text-[#5C5855]">
             {currentStepData.label}
           </span>
         </div>
-        <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+        <div className="w-full bg-[#F2EFE9] rounded-full h-1 overflow-hidden">
           <motion.div 
-            className="bg-emerald-500 h-1.5 rounded-full" 
+            className="bg-[#D97757] h-1 rounded-full" 
             initial={{ width: `${(currentQuestionIdx / steps.length) * 100}%` }}
             animate={{ width: `${progressPercentage}%` }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
           />
         </div>
       </div>
@@ -73,14 +74,14 @@ export default function AssessmentForm() {
         <AnimatePresence mode="wait">
           <motion.div 
             key={currentQuestionIdx}
-            initial={{ x: 20, opacity: 0 }}
+            initial={{ x: 10, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -20, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            exit={{ x: -10, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
             className="flex-grow space-y-6"
           >
             <div>
-              <h2 className="text-3xl font-bold text-white mb-6 leading-tight">{currentStepData.title}</h2>
+              <h2 className="text-3xl font-serif text-[#33312E] mb-8 leading-tight">{currentStepData.title}</h2>
               <Controller
                 name={currentStepData.id as keyof AssessmentData}
                 control={control}
@@ -89,7 +90,7 @@ export default function AssessmentForm() {
                     {currentStepData.options.map((option: string) => (
                       <label 
                         key={option} 
-                        className={`flex items-center p-4 rounded-xl border ${field.value === option ? 'border-emerald-500 bg-emerald-500/10' : 'border-white/10 bg-white/5 hover:bg-white/10'} cursor-pointer transition-all active:scale-[0.98]`}
+                        className={`flex items-center p-4 rounded-xl border transition-all cursor-pointer ${field.value === option ? 'border-[#33312E] bg-[#FAF9F6] shadow-sm' : 'border-[#E5E2DC] bg-white hover:border-[#D5CFCD] hover:bg-[#FAF9F6]'} active:scale-[0.99]`}
                       >
                         <input
                           type="radio"
@@ -98,17 +99,17 @@ export default function AssessmentForm() {
                           checked={field.value === option}
                           onChange={() => field.onChange(option)}
                         />
-                        <div className={`w-5 h-5 rounded-full border flex flex-shrink-0 items-center justify-center mr-4 ${field.value === option ? 'border-emerald-500' : 'border-slate-500'}`}>
-                          {field.value === option && <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full" />}
+                        <div className={`w-5 h-5 rounded-full border flex flex-shrink-0 items-center justify-center mr-4 transition-colors ${field.value === option ? 'border-[#33312E]' : 'border-[#D5CFCD]'}`}>
+                          {field.value === option && <div className="w-2.5 h-2.5 bg-[#33312E] rounded-full" />}
                         </div>
-                        <span className={`text-lg ${field.value === option ? 'text-white font-medium' : 'text-slate-300'}`}>{option}</span>
+                        <span className={`text-lg transition-colors ${field.value === option ? 'text-[#33312E] font-medium' : 'text-[#5C5855]'}`}>{option}</span>
                       </label>
                     ))}
                   </div>
                 )}
               />
               {errors[currentStepData.id as keyof AssessmentData] && (
-                <p className="mt-3 text-sm text-red-400 flex items-center">
+                <p className="mt-3 text-sm text-[#D97757] flex items-center">
                   <span className="mr-1">⚠</span> {errors[currentStepData.id as keyof AssessmentData]?.message}
                 </p>
               )}
@@ -116,12 +117,12 @@ export default function AssessmentForm() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="flex justify-between items-center pt-6 border-t border-white/10 mt-auto">
+        <div className="flex justify-between items-center pt-8 border-t border-[#E5E2DC] mt-auto">
           <button
             type="button"
             onClick={prevStep}
             disabled={currentQuestionIdx === 0}
-            className={`px-6 py-3 rounded-xl font-medium transition-all ${currentQuestionIdx === 0 ? 'opacity-0 pointer-events-none' : 'text-slate-300 hover:text-white bg-white/5 hover:bg-white/10'}`}
+            className={`px-6 py-2.5 rounded-lg font-medium transition-all ${currentQuestionIdx === 0 ? 'opacity-0 pointer-events-none' : 'text-[#8A8580] hover:text-[#33312E] hover:bg-[#F2EFE9]'}`}
           >
             ← Back
           </button>
@@ -130,17 +131,17 @@ export default function AssessmentForm() {
             <button
               type="button"
               onClick={nextStep}
-              className="px-8 py-3 rounded-xl font-bold text-slate-900 bg-emerald-400 hover:bg-emerald-300 transition-all active:scale-95 shadow-[0_0_20px_rgba(52,211,153,0.3)]"
+              className="px-8 py-2.5 rounded-lg font-medium text-white bg-[#33312E] hover:bg-[#1A1918] transition-colors shadow-sm active:scale-[0.98]"
             >
-              Next
+              Continue
             </button>
           ) : (
             <button
               type="submit"
-              className="px-8 py-3 rounded-xl font-bold text-slate-900 bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 transition-all active:scale-95 shadow-[0_0_20px_rgba(52,211,153,0.4)] flex items-center space-x-2"
+              className="px-8 py-2.5 rounded-lg font-medium text-white bg-[#D97757] hover:bg-[#C26344] transition-colors shadow-sm flex items-center space-x-2 active:scale-[0.98]"
             >
               <span>Analyze Approach</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </button>
           )}
         </div>
